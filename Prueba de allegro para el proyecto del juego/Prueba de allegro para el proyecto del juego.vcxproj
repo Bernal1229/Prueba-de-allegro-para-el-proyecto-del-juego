@@ -163,6 +163,7 @@
     <ClCompile Include="Enemigos.cpp" />
     <ClCompile Include="Estadisticas.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Explosion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ajustes.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Enemigos.h" />
     <ClInclude Include="Colisiones.h" />
     <ClInclude Include="Estadisticas.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Jugador.h" />
   </ItemGroup>

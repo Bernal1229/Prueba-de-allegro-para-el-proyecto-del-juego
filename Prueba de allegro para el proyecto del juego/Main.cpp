@@ -21,6 +21,7 @@ using namespace std;
 #include "Colisiones.h"
 #include "Estadisticas.h"
 #include "Menu.h"
+#include "Explosion.h" 
 //********Creacion variables del juego
 #define FPS 60.0
 
@@ -105,6 +106,8 @@ int main() {
 
 	srand(time(0));
 
+	
+
 
 	//*********Inicializacion de los addons de allegro
 	al_init_font_addon();
@@ -144,8 +147,14 @@ int main() {
 	ALLEGRO_BITMAP* ImagenAsteroide = al_load_bitmap("Assets/Asteroide.png");
 	ALLEGRO_BITMAP* Fondo = al_load_bitmap("Assets/Fondo.jpg");
 	ALLEGRO_BITMAP* Fondomenu = al_load_bitmap("Assets/FondoMenu.png");
-	ALLEGRO_BITMAP* Explosion = al_load_bitmap("Assets/Explosionmeteorito.gif");
+	ALLEGRO_BITMAP* ImagenesExplosion[40];
 
+	ImagenesExplosion[0] = al_load_bitmap("Assets/EXP1.png");
+	ImagenesExplosion[1] = al_load_bitmap("Assets/EXP2.png");
+	ImagenesExplosion[2] = al_load_bitmap("Assets/EXP3.png");
+	ImagenesExplosion[3] = al_load_bitmap("Assets/EXP4.png");
+	ImagenesExplosion[4] = al_load_bitmap("Assets/EXP5.png");
+	ImagenesExplosion[5] = al_load_bitmap("Assets/EXP6.png");
 
 	//Inicializar Jugador
 	Jugador jugador;
@@ -164,6 +173,7 @@ int main() {
 	//***********************Creacion de estructuras y declaracion de variables
 	std::vector<PtrBala> Balas;
 	std::vector<PtrEnemigo> Enemigos;
+	std::vector<PtrExplosion> Explosiones;
 	Estadisticas stats;
 	int mousex = 0;
 	int mousey = 0;
@@ -257,8 +267,14 @@ int main() {
 		}
 		dibujarenemigos(Enemigos, ImagenAsteroide); //Se dibujan los enemigos.
 		Actualizarenemigos(Enemigos, stats);//Se actualizan las caracteristicas de los enemigos.
+		GenerarExplosion(Enemigos, Explosiones);
+		AnimarExplosion(Explosiones);
+		DrawExplosion(ImagenesExplosion, Explosiones);
+		BorrarExplosiones(Explosiones);
+
+
 		EliminarEnemigo(Enemigos); //Se eliminan los enemigos inactivos
-		colision_balas_meteoritos(Balas, Enemigos, ImagenBala, ImagenAsteroide, Explosion, stats); // Se revisan las coordenadas de kos enemigos y las balas para detectar colisiones.
+		colision_balas_meteoritos(Balas, Enemigos, ImagenBala, ImagenAsteroide, stats, ImagenesExplosion, Explosiones); // Se revisan las coordenadas de kos enemigos y las balas para detectar colisiones.
 		colision_jugador_meteoritos(jugador, Enemigos, ImagenJugador, ImagenAsteroide, stats); // Se revisan las coordenadas de los enemigos y el jugador para detectar colisiones.
 		Imprimirestadisticas(gameFont, stats); //Se imprimen las estadisticas a la pantalla del juego.
 

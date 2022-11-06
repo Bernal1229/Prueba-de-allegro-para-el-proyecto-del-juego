@@ -4,13 +4,15 @@
 #include "Jugador.h"
 #include "Estadisticas.h"
 
+
 typedef struct Enemigo {
 
 	int X, Y, angulo, velocidad, vida;
 	float size, angulo2;
-	bool Activo;
+	bool Activo, Colision;
 
 }*PtrEnemigo;
+
 
 void EncolarEnemigo(std::vector<PtrEnemigo>& Enemigos, PtrEnemigo& NuevoEnemigo);
 void crearenemigo(int tipo, std::vector<PtrEnemigo>& Enemigos, Estadisticas stats, Jugador jugador);

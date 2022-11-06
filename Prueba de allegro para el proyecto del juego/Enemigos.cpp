@@ -4,6 +4,7 @@
 #include <cmath>
 
 
+
 void EncolarEnemigo(std::vector<PtrEnemigo>& Enemigos, PtrEnemigo& NuevoEnemigo) { //Se agrega un nuevo enemigo al vector de enemigos
 
 	Enemigos.push_back(NuevoEnemigo);
@@ -56,7 +57,7 @@ void crearenemigo(int tipo, std::vector<PtrEnemigo>& Enemigos, Estadisticas stat
 	Enemy->size = (3.0 + (rand() % 7))/100;
 	Enemy->Activo = true;
 	Enemy->angulo2 = 0;
-
+	Enemy->Colision = false;
 	
 
 	EncolarEnemigo(Enemigos, Enemy);
