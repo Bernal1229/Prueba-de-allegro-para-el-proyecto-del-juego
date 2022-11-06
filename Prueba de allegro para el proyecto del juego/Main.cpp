@@ -7,11 +7,6 @@
 #include <allegro5/allegro_image.h>
 #include <iostream>
 #include <vector>
-#include <stdlib.h>
-#include <cstdlib>
-#include<stdio.h>
-#include<conio.h>
-#include<stdlib.h>
 using namespace std;
 //Importacion de headers propios
 #include "Jugador.h"
@@ -60,50 +55,12 @@ void RecibirTeclasLevantadas(ALLEGRO_EVENT evento, Jugador& jugador) {
 	}
 }
 
-
-
-void Guardarestadisticas(Estadisticas &stats) {
-	FILE* archivo = NULL;
-	fopen_s(&archivo, "MejorPuntaje.txt", "w+");
-	if (NULL == archivo) {
-		printf("No se pudo abrir el archivo.");
-		return;
-	}
-	else {
-		fprintf(archivo, "%d\n", stats.meteoritos_destruidos);
-		
-	}
-	fclose(archivo);
-}
-
-void CargarMejorPuntaje(Estadisticas &stats) {
-
-	FILE* archivo;
-	fopen_s(&archivo, "MejorPuntaje.txt", "r+");
-	if (NULL == archivo) {
-		stats.mejor_puntaje = 0;
-		return;
-	}
-	else {
-
-		while (!feof(archivo)) {
-			
-			fscanf_s(archivo, "%i\n", &stats.mejor_puntaje);
-
-		}
-	}
-	fclose(archivo);
-
-	cout << stats.mejor_puntaje << endl;
-}
-
-
 int main() {
 	if (!al_init()) {
 		return -1;
 	}
 
-	srand(time(0));
+	srand(time(0)); 
 
 
 	//*********Inicializacion de los addons de allegro
@@ -129,7 +86,7 @@ int main() {
 	gameFont = al_load_font("pixel.ttf", 40, NULL);
 	fuente2 = al_load_font("pixel.ttf", 100, NULL);
 	fuente3 = al_load_font("pixel.ttf", 60, NULL);
-
+	
 
 	//************************************Registro de eventos en la cola de eventos
 	al_register_event_source(cola_eventos, al_get_display_event_source(display));
@@ -145,8 +102,8 @@ int main() {
 	ALLEGRO_BITMAP* Fondo = al_load_bitmap("Assets/Fondo.jpg");
 	ALLEGRO_BITMAP* Fondomenu = al_load_bitmap("Assets/FondoMenu.png");
 	ALLEGRO_BITMAP* Explosion = al_load_bitmap("Assets/Explosionmeteorito.gif");
-
-
+	
+	
 	//Inicializar Jugador
 	Jugador jugador;
 	jugador.acelerando = false;
@@ -169,10 +126,6 @@ int main() {
 	int mousey = 0;
 	bool menuactivo = true;
 
-	CargarMejorPuntaje(stats);
-
-
-
 	//Se inicia el timer
 	al_start_timer(timer);
 
@@ -180,50 +133,50 @@ int main() {
 	while (menuactivo) {
 		ALLEGRO_EVENT Evento;
 		al_wait_for_event(cola_eventos, &Evento);
-
+		
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 		al_draw_bitmap(Fondo, 0, 0, 0);
-		al_draw_textf(fuente2, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2.0, ALTO_PANTALLA / 5.0, ALLEGRO_ALIGN_CENTER, "Galaroid");
-		al_draw_textf(fuente3, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2.0, (ALTO_PANTALLA / 5.0) * 2, ALLEGRO_ALIGN_CENTER, "Jugar");
+		al_draw_textf(fuente2, al_map_rgb(255, 255, 255), ANCHO_PANTALLA/2.0, ALTO_PANTALLA / 5.0, ALLEGRO_ALIGN_CENTER, "Galaroid");
+		al_draw_textf(fuente3, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2.0, (ALTO_PANTALLA / 5.0)*2, ALLEGRO_ALIGN_CENTER, "Jugar");
 		al_draw_textf(fuente3, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2.0, (ALTO_PANTALLA / 6.0) * 3, ALLEGRO_ALIGN_CENTER, "Instrucciones");
 		al_draw_textf(fuente3, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2.0, (ALTO_PANTALLA / 6.0) * 4, ALLEGRO_ALIGN_CENTER, "Salir");
-		if (Evento.type == ALLEGRO_EVENT_MOUSE_AXES)
-		{
-			mousex = Evento.mouse.x;
-			mousey = Evento.mouse.y;
-		}
-		if ((mousex >= 697) && (mousex <= 801) && (mousey >= 373) && (mousey <= 409)) {
-			al_draw_textf(fuente3, al_map_rgb(255, 255, 20), ANCHO_PANTALLA / 2.0, (ALTO_PANTALLA / 5.0) * 2, ALLEGRO_ALIGN_CENTER, "Jugar");
-			if (Evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			if (Evento.type == ALLEGRO_EVENT_MOUSE_AXES)
 			{
-				if (Evento.mouse.button & 1) {
-					//Si se presiona el click del mouse se inicia el juego y se indican las vidas totales y el nivel, si el juego termina se avanza de nivel hasta que se pierdan las vidas y el modo determina si es maquina vs maquina o jugador vs maquina
-					menuactivo = false;
+				mousex = Evento.mouse.x;
+				mousey = Evento.mouse.y;
+			}
+			if ((mousex >= 697) && (mousex <= 801) && (mousey >= 373) && (mousey <= 409)) {
+				al_draw_textf(fuente3, al_map_rgb(255, 255, 20), ANCHO_PANTALLA / 2.0, (ALTO_PANTALLA / 5.0) * 2, ALLEGRO_ALIGN_CENTER, "Jugar");
+				if (Evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (Evento.mouse.button & 1) {
+						//Si se presiona el click del mouse se inicia el juego y se indican las vidas totales y el nivel, si el juego termina se avanza de nivel hasta que se pierdan las vidas y el modo determina si es maquina vs maquina o jugador vs maquina
+						menuactivo = false;
+					}
 				}
 			}
-		}
-		if ((mousex >= 619) && (mousex <= 875) && (mousey >= 464) && (mousey <= 494)) {
-			al_draw_textf(fuente3, al_map_rgb(255, 255, 20), ANCHO_PANTALLA / 2.0, (ALTO_PANTALLA / 6.0) * 3, ALLEGRO_ALIGN_CENTER, "Instrucciones");
-			if (Evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-			{
-				if (Evento.mouse.button & 1) {
-					//Si se presiona el click del mouse se inicia el juego y se indican las vidas totales y el nivel, si el juego termina se avanza de nivel hasta que se pierdan las vidas y el modo determina si es maquina vs maquina o jugador vs maquina
-					instrucciones(cola_eventos, gameFont);
+			if ((mousex >= 619) && (mousex <= 875) && (mousey >= 464) && (mousey <= 494)) {
+				al_draw_textf(fuente3, al_map_rgb(255, 255, 20), ANCHO_PANTALLA / 2.0, (ALTO_PANTALLA / 6.0) * 3, ALLEGRO_ALIGN_CENTER, "Instrucciones");
+				if (Evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (Evento.mouse.button & 1) {
+						//Si se presiona el click del mouse se inicia el juego y se indican las vidas totales y el nivel, si el juego termina se avanza de nivel hasta que se pierdan las vidas y el modo determina si es maquina vs maquina o jugador vs maquina
+						instrucciones(cola_eventos, gameFont);
+					}
 				}
 			}
-		}
-		if ((mousex >= 710) && (mousex <= 788) && (mousey >= 610) && (mousey <= 644)) {
-			al_draw_textf(fuente3, al_map_rgb(255, 255, 20), ANCHO_PANTALLA / 2.0, (ALTO_PANTALLA / 6.0) * 4, ALLEGRO_ALIGN_CENTER, "Salir");
-			if (Evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-			{
-				if (Evento.mouse.button & 1) {
-					//Si se presiona el click del mouse se inicia el juego y se indican las vidas totales y el nivel, si el juego termina se avanza de nivel hasta que se pierdan las vidas y el modo determina si es maquina vs maquina o jugador vs maquina
-					return 0;
+			if ((mousex >= 710) && (mousex <= 788) && (mousey >= 610) && (mousey <= 644)) {
+				al_draw_textf(fuente3, al_map_rgb(255, 255, 20), ANCHO_PANTALLA / 2.0, (ALTO_PANTALLA / 6.0) * 4, ALLEGRO_ALIGN_CENTER, "Salir");
+				if (Evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (Evento.mouse.button & 1) {
+						//Si se presiona el click del mouse se inicia el juego y se indican las vidas totales y el nivel, si el juego termina se avanza de nivel hasta que se pierdan las vidas y el modo determina si es maquina vs maquina o jugador vs maquina
+						return 0;
+					}
 				}
 			}
-		}
 
-		al_flip_display();
+			al_flip_display();
 	}
 
 	//Se desinstala el mouse
@@ -232,11 +185,11 @@ int main() {
 
 	//Se crea una variable para la condicion de true del juego y se inicia el while del juego
 	bool juego = true;
-
+	
 	while (juego) {
 		ALLEGRO_EVENT Evento;
 		al_wait_for_event(cola_eventos, &Evento);
-		al_draw_bitmap(Fondo, 0, 0, 0);
+		al_draw_bitmap(Fondo, 0,0,0);
 
 
 		if (Evento.type == ALLEGRO_EVENT_KEY_DOWN) { //Si se presiona una tecla, se obtiene cual es.
@@ -253,12 +206,12 @@ int main() {
 		BorrarPosicion(Balas);//Funcion para Borrar las balas inactivas
 		if (((rand() % 1000) % 99) == 0) { //Condicion para crear enemigos aleatoriamente
 			int i = (rand() % 4) + 1;// Numero aleatorio entre 1 y 4
-			crearenemigo(i, Enemigos, stats, jugador); // Se crea un enemigo si se cumple la condicion y se crea con el numero creado aleatoriamente entre 1 y 4.
+			crearenemigo(i, Enemigos); // Se crea un enemigo si se cumple la condicion y se crea con el numero creado aleatoriamente entre 1 y 4.
 		}
 		dibujarenemigos(Enemigos, ImagenAsteroide); //Se dibujan los enemigos.
-		Actualizarenemigos(Enemigos, stats);//Se actualizan las caracteristicas de los enemigos.
+		Actualizarenemigos(Enemigos);//Se actualizan las caracteristicas de los enemigos.
 		EliminarEnemigo(Enemigos); //Se eliminan los enemigos inactivos
-		colision_balas_meteoritos(Balas, Enemigos, ImagenBala, ImagenAsteroide, Explosion, stats); // Se revisan las coordenadas de kos enemigos y las balas para detectar colisiones.
+		colision_balas_meteoritos(Balas, Enemigos, ImagenBala, ImagenAsteroide,Explosion, stats); // Se revisan las coordenadas de kos enemigos y las balas para detectar colisiones.
 		colision_jugador_meteoritos(jugador, Enemigos, ImagenJugador, ImagenAsteroide, stats); // Se revisan las coordenadas de los enemigos y el jugador para detectar colisiones.
 		Imprimirestadisticas(gameFont, stats); //Se imprimen las estadisticas a la pantalla del juego.
 
@@ -275,47 +228,22 @@ int main() {
 	}
 	bool finjuego = true;
 
-	int r = 0;
-	int g = 0;
-	int b = 0;
-
 	while (finjuego) { //Se imprime el final del juego con todas las estadisticas de la partida.
-		cout << stats.mejor_puntaje << endl;
-		r += 30;
-		g += 1;
-		b += 50;
-		if (r == 255) r = 0;
-		if (g == 255) g = 0;
-		if (b == 255) b = 0;
 		ALLEGRO_EVENT Evento;
 		al_wait_for_event(cola_eventos, &Evento);
 		al_flip_display();
 		al_clear_to_color(al_map_rgb(0, 0, 0));
-		al_draw_textf(gameFont, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2, ALTO_PANTALLA / 12 * 3, ALLEGRO_ALIGN_CENTER, "Fin del juego");
-		al_draw_textf(gameFont, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2, ALTO_PANTALLA / 12 * 4, ALLEGRO_ALIGN_CENTER, "Meteoritos destruidos: %i", stats.meteoritos_destruidos);
-		al_draw_textf(gameFont, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2, ALTO_PANTALLA / 12 * 5, ALLEGRO_ALIGN_CENTER, "Nivel alcanzado: %i", stats.nivel);
-		if (stats.meteoritos_destruidos <= stats.mejor_puntaje) {
-			al_draw_textf(gameFont, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2, ALTO_PANTALLA / 12 * 7, ALLEGRO_ALIGN_CENTER, "Mejor Puntaje: %i", stats.mejor_puntaje);
-		}
-		if (stats.meteoritos_destruidos > stats.mejor_puntaje) {
-			al_draw_textf(gameFont, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2, ALTO_PANTALLA / 12 * 7, ALLEGRO_ALIGN_CENTER, "Anterior Mejor Puntaje: %i", stats.mejor_puntaje);
-			al_draw_textf(gameFont, al_map_rgb(r, g, b), ANCHO_PANTALLA / 2, ALTO_PANTALLA / 12 * 8, ALLEGRO_ALIGN_CENTER, "Nuevo Mejor Puntaje: %i", stats.meteoritos_destruidos);
-		}
-
-		al_draw_textf(gameFont, al_map_rgb(255, 255, 255), ANCHO_PANTALLA / 2.0, ALTO_PANTALLA / 12 * 10, ALLEGRO_ALIGN_CENTER, "Presione ESC para salir");
-
+		al_draw_textf(gameFont, al_map_rgb(255, 255, 255), 750, 400, ALLEGRO_ALIGN_CENTER, "Fin del juego");
+		al_draw_textf(gameFont, al_map_rgb(255, 255, 255), 750, 500, ALLEGRO_ALIGN_CENTER, "Meteoritos destruidos: %i", stats.meteoritos_destruidos);
+		al_draw_textf(gameFont, al_map_rgb(255, 255, 255), 750, 600, ALLEGRO_ALIGN_CENTER, "Nivel alcanzado: %i", stats.nivel);
 		if (Evento.type == ALLEGRO_EVENT_KEY_DOWN) {
 
 
-			if (Evento.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+			if (Evento.keyboard.keycode == ALLEGRO_KEY_ESCAPE) { 
 
 				finjuego = false;
 
 			}
 		}
 	}
-
-	Guardarestadisticas(stats);
-
-	return 0;
 }

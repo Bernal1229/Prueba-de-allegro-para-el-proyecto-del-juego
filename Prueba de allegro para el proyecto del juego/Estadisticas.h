@@ -7,7 +7,7 @@
 //Se define el struct de estadisticas.
 struct Estadisticas {
 
-	int meteoritos_destruidos = 0, vidas_restantes = 5, nivel = 3, contadornivel = 0, mejor_puntaje;
+	int meteoritos_destruidos = 0, vidas_restantes = 5, nivel = 1, contadornivel = 0;
 
 };
 
