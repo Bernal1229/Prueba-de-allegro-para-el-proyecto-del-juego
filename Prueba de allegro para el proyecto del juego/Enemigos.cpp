@@ -16,16 +16,16 @@ void crearenemigo(int tipo, std::vector<PtrEnemigo>& Enemigos, Estadisticas stat
 	//Caracteristicas dependiendo del caso
 	case 1:
 		Enemy->vida = 1;
-		Enemy->velocidad = 1;
+		Enemy->velocidad = 2.5;
 	case 2:
 		Enemy->vida = 2;
-		Enemy->velocidad = 2;
+		Enemy->velocidad = 2.5;
 	case 3:
 		Enemy->vida = 3;
-		Enemy->velocidad = 4;
+		Enemy->velocidad = 2.5;
 	case 4:
 		Enemy->vida = 4;
-		Enemy->velocidad = 5;
+		Enemy->velocidad = 2.5;
 
 	}
 
@@ -80,12 +80,19 @@ void Actualizarenemigos(std::vector<PtrEnemigo> &Enemigos, Estadisticas stats) {
 				Enemigos[i]->angulo2 += 3.5 * (3.1415/180);
 				revisarbordes(Enemigos[i]);
 
-				if (stats.nivel == 3 && Enemigos[i]->angulo != 0) {
+				if (Enemigos[i]->X > 30 && Enemigos[i]->X < 1200 && stats.nivel >= 3 && stats.nivel % 2 != 0 && Enemigos[i]->angulo % 90*pi/180 != 0 && Enemigos[i]->angulo > 1) {
 
-
-					Enemigos[i]->X += 20*cos(Enemigos[i]->Y*0.069);
+					Enemigos[i]->X += 20*cos(Enemigos[i]->Y*0.09);
 
 				}
+				if (Enemigos[i]->Y > 30 && Enemigos[i]->Y < 850 && stats.nivel >= 3 && stats.nivel % 2 == 0 && Enemigos[i]->angulo % 180 * pi / 180 != 0 && Enemigos[i]->angulo > 1) {
+
+					Enemigos[i]->Y += 20 * cos(Enemigos[i]->X * 0.09);
+
+				}
+				
+
+
 
 	}
 	

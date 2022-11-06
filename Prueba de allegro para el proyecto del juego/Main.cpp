@@ -237,7 +237,7 @@ int main() {
 		ALLEGRO_EVENT Evento;
 		al_wait_for_event(cola_eventos, &Evento);
 		al_draw_bitmap(Fondo, 0, 0, 0);
-
+		
 
 		if (Evento.type == ALLEGRO_EVENT_KEY_DOWN) { //Si se presiona una tecla, se obtiene cual es.
 			RecibirTeclasPresionadas(Evento, jugador, Balas);
@@ -315,7 +315,11 @@ int main() {
 		}
 	}
 
-	Guardarestadisticas(stats);
+	if (stats.meteoritos_destruidos > stats.mejor_puntaje) {
+
+		Guardarestadisticas(stats);
+
+	}
 
 	return 0;
 }
