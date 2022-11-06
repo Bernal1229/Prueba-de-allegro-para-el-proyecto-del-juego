@@ -10,7 +10,7 @@ void EncolarEnemigo(std::vector<PtrEnemigo>& Enemigos, PtrEnemigo& NuevoEnemigo)
 
 };
 
-void crearenemigo(int tipo, std::vector<PtrEnemigo>& Enemigos) { //Se crea un nuevo enemigo
+void crearenemigo(int tipo, std::vector<PtrEnemigo>& Enemigos, Estadisticas stats, Jugador jugador) { //Se crea un nuevo enemigo
 	PtrEnemigo Enemy = new(Enemigo);
 	switch (tipo) {
 	//Caracteristicas dependiendo del caso
@@ -57,6 +57,8 @@ void crearenemigo(int tipo, std::vector<PtrEnemigo>& Enemigos) { //Se crea un nu
 	Enemy->Activo = true;
 	Enemy->angulo2 = 0;
 
+	
+
 	EncolarEnemigo(Enemigos, Enemy);
 
 };
@@ -71,16 +73,25 @@ void revisarbordes(PtrEnemigo Enemigos) { //Se revisa que el meteorito no este e
 		}
 };
 
-void Actualizarenemigos(std::vector<PtrEnemigo> &Enemigos) { //Se actualizan las caracteristicas de los meteoritos como su posicion
+void Actualizarenemigos(std::vector<PtrEnemigo> &Enemigos, Estadisticas stats) { //Se actualizan las caracteristicas de los meteoritos como su posicion
 	for (int i = 0; i < Enemigos.size(); i++) {
-				Enemigos[i]->X = Enemigos[i]->X + Enemigos[i]->velocidad*cos(Enemigos[i]->angulo);
+				Enemigos[i]->X = Enemigos[i]->X + Enemigos[i]->velocidad* cos(Enemigos[i]->angulo);
 				Enemigos[i]->Y = Enemigos[i]->Y + Enemigos[i]->velocidad * sin(Enemigos[i]->angulo);
 				Enemigos[i]->angulo2 += 3.5 * (3.1415/180);
 				revisarbordes(Enemigos[i]);
-				std::cout << Enemigos.size() << std::endl;
+
+				if (stats.nivel == 3 && Enemigos[i]->angulo != 0) {
+
+
+					Enemigos[i]->X += 20*cos(Enemigos[i]->Y*0.069);
+
+				}
+
 	}
 	
 };
+
+
 
 void dibujarenemigos(std::vector<PtrEnemigo>& Enemigos, ALLEGRO_BITMAP*& Imagen) { //Se dibujan todos los meteoritos una vez actualizados
 	for (std::vector<PtrEnemigo>::iterator Enemigoiter = Enemigos.begin(); Enemigoiter != Enemigos.end(); Enemigoiter++) {
@@ -100,3 +111,4 @@ void EliminarEnemigo(std::vector<PtrEnemigo>& Enemigos) { //Se eliminana los met
 	}
 
 };
+
